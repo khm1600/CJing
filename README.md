@@ -1,4 +1,4 @@
-C# with alternative keywords in Chinese (Simplified) characters similar to the one purposed in [issue #993 of dotnte/csharplang](https://github.com/dotnet/csharplang/issues/993).  
+C# with alternative keywords in Chinese (Simplified) characters similar to the one proposed in [issue #993 of dotnte/csharplang](https://github.com/dotnet/csharplang/issues/993).  
 
 ### What's working  
 * Correct (0-warning-0-error) programs correctly compiles.  

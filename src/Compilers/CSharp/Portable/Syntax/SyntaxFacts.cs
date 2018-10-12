@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -406,7 +407,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static bool IsVar(this Syntax.InternalSyntax.SyntaxToken node)
         {
-            return node.Kind == SyntaxKind.IdentifierToken && node.ValueText == "var";
+            return node.Kind == SyntaxKind.IdentifierToken && (node.ValueText == "var" || node.ValueText == "变");
         }
 
         internal static bool IsVarOrPredefinedType(this Syntax.InternalSyntax.SyntaxToken node)

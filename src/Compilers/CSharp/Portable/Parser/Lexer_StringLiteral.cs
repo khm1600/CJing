@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using Microsoft.CodeAnalysis.Collections;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -16,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         private void ScanStringLiteral(ref TokenInfo info, bool allowEscapes = true)
         {
             var quoteCharacter = TextWindow.PeekChar();
-            if (quoteCharacter == '\'' || quoteCharacter == '"')
+            if (quoteCharacter == '\'' || quoteCharacter == '"' || quoteCharacter == '“' || quoteCharacter == '‘')
             {
                 TextWindow.AdvanceChar();
                 _builder.Length = 0;
@@ -34,7 +35,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             _builder.Append(c2);
                         }
                     }
-                    else if (ch == quoteCharacter)
+                    else if (((quoteCharacter == '\'' || quoteCharacter == '"') && ch == quoteCharacter) || 
+                             (quoteCharacter == '“' && ch == '”') || 
+                             (quoteCharacter == '‘' && ch == '’'))
                     {
                         TextWindow.AdvanceChar();
                         break;
@@ -57,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 }
 
                 info.Text = TextWindow.GetText(true);
-                if (quoteCharacter == '\'')
+                if (quoteCharacter == '\'' || quoteCharacter == '‘')
                 {
                     info.Kind = SyntaxKind.CharacterLiteralToken;
                     if (_builder.Length != 1)
@@ -156,7 +159,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             _builder.Length = 0;
 
-            if (TextWindow.PeekChar() == '@' && TextWindow.PeekChar(1) == '"')
+            if (TextWindow.PeekChar() == '@' && (TextWindow.PeekChar(1) == '"' || TextWindow.PeekChar(1) == '“'))
             {
                 TextWindow.AdvanceChar(2);
                 bool done = false;
@@ -167,8 +170,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     switch (ch = TextWindow.PeekChar())
                     {
                         case '"':
+                        case '”':
                             TextWindow.AdvanceChar();
-                            if (TextWindow.PeekChar() == '"')
+                            if ((ch == '"' && TextWindow.PeekChar() == '"') ||
+                                (ch == '”' && TextWindow.PeekChar() == '“'))
                             {
                                 // Doubled quote -- skip & put the single quote in the string
                                 TextWindow.AdvanceChar();
@@ -326,9 +331,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 }
 
                 Debug.Assert(lexer.TextWindow.PeekChar() == '"');
-                lexer.TextWindow.AdvanceChar(); // "
+
+                var quoteCharacter = lexer.TextWindow.PeekChar();
+
+                //lexer.TextWindow.AdvanceChar(); // "
                 ScanInterpolatedStringLiteralContents(interpolations);
-                if (lexer.TextWindow.PeekChar() != '"')
+                if ((quoteCharacter == '"' && lexer.TextWindow.PeekChar() != '"') || 
+                    (quoteCharacter == '“' && lexer.TextWindow.PeekChar() != '”'))
                 {
                     Debug.Assert(IsAtEnd());
                     if (error == null)
@@ -351,6 +360,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
             private void ScanInterpolatedStringLiteralContents(ArrayBuilder<Interpolation> interpolations)
             {
+                var quoteCharacter = lexer.TextWindow.PeekChar();
+                lexer.TextWindow.AdvanceChar();
+
                 while (true)
                 {
                     if (IsAtEnd())
@@ -369,7 +381,28 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                                 continue;
                             }
                             // found the end of the string
-                            return;
+                            if (quoteCharacter == '"')
+                            {
+                                return;
+                            }
+                            lexer.TextWindow.AdvanceChar();
+                            continue;
+
+                        case '”':
+                            if (isVerbatim && lexer.TextWindow.PeekChar(1) == '“')
+                            {
+                                lexer.TextWindow.AdvanceChar(); // ”
+                                lexer.TextWindow.AdvanceChar(); // “
+                                continue;
+                            }
+                            // found the end of the string
+                            if (quoteCharacter == '“')
+                            {
+                                return;
+                            }
+                            lexer.TextWindow.AdvanceChar();
+                            continue;
+
                         case '}':
                             var pos = lexer.TextWindow.Position;
                             lexer.TextWindow.AdvanceChar(); // }
@@ -454,9 +487,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             error = lexer.MakeError(pos, 1, ErrorCode.ERR_EscapedCurly, ch);
                         }
                     }
-                    else if (ch == '"')
+                    else if (ch == '"' || ch == '”')
                     {
-                        if (isVerbatim && lexer.TextWindow.PeekChar(1) == '"')
+                        if (isVerbatim && 
+                            ((ch == '"' && lexer.TextWindow.PeekChar(1) == '"') || 
+                            (ch == '”' && lexer.TextWindow.PeekChar(1) == '“')))
                         {
                             lexer.TextWindow.AdvanceChar();
                             lexer.TextWindow.AdvanceChar();
@@ -529,7 +564,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             lexer.TextWindow.AdvanceChar();
                             continue;
                         case '$':
-                            if (lexer.TextWindow.PeekChar(1) == '"' || lexer.TextWindow.PeekChar(1) == '@' && lexer.TextWindow.PeekChar(2) == '"')
+                        case '￥':
+                            if ((lexer.TextWindow.PeekChar(1) == '"' || lexer.TextWindow.PeekChar(1) == '“') || 
+                                (lexer.TextWindow.PeekChar(1) == '@' && (lexer.TextWindow.PeekChar(2) == '"' || lexer.TextWindow.PeekChar(2) == '“')))
                             {
                                 bool isVerbatimSubstring = lexer.TextWindow.PeekChar(1) == '@';
                                 var interpolations = default(ArrayBuilder<Interpolation>);
@@ -579,11 +616,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             goto default;
                         case '"':
                         case '\'':
+                        case '“':
+                        case '‘':
                             // handle string or character literal inside an expression hole.
                             ScanInterpolatedStringLiteralNestedString();
                             continue;
                         case '@':
-                            if (lexer.TextWindow.PeekChar(1) == '"')
+                            if (lexer.TextWindow.PeekChar(1) == '"' || lexer.TextWindow.PeekChar(1) == '“')
                             {
                                 // check for verbatim string inside an expression hole.
                                 ScanInterpolatedStringLiteralNestedVerbatimString();

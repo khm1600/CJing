@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using System;
 using System.Diagnostics;
@@ -434,6 +435,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             character = TextWindow.PeekChar();
             switch (character)
             {
+                case '“':
+                case '‘':
                 case '\"':
                 case '\'':
                     this.ScanStringLiteral(ref info);
@@ -462,14 +465,22 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                     break;
 
+                case '·':
+                case '。':
+                    TextWindow.AdvanceChar();
+                    info.Kind = SyntaxKind.DotToken;
+                    break;
+
                 case ',':
+                case '，':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.CommaToken;
                     break;
 
                 case ':':
+                case '：':
                     TextWindow.AdvanceChar();
-                    if (TextWindow.PeekChar() == ':')
+                    if (TextWindow.PeekChar() == character)
                     {
                         TextWindow.AdvanceChar();
                         info.Kind = SyntaxKind.ColonColonToken;
@@ -482,6 +493,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case ';':
+                case '；':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.SemicolonToken;
                     break;
@@ -492,6 +504,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '!':
+                case '！':
                     TextWindow.AdvanceChar();
                     if (TextWindow.PeekChar() == '=')
                     {
@@ -512,7 +525,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                         TextWindow.AdvanceChar();
                         info.Kind = SyntaxKind.EqualsEqualsToken;
                     }
-                    else if (character == '>')
+                    else if (character == '>' || character == '》')
                     {
                         TextWindow.AdvanceChar();
                         info.Kind = SyntaxKind.EqualsGreaterThanToken;
@@ -539,11 +552,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '(':
+                case '（':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.OpenParenToken;
                     break;
 
                 case ')':
+                case '）':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.CloseParenToken;
                     break;
@@ -559,18 +574,21 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '[':
+                case '【':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.OpenBracketToken;
                     break;
 
                 case ']':
+                case '】':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.CloseBracketToken;
                     break;
 
                 case '?':
+                case '？':
                     TextWindow.AdvanceChar();
-                    if (TextWindow.PeekChar() == '?')
+                    if (TextWindow.PeekChar() == character)
                     {
                         TextWindow.AdvanceChar();
                         info.Kind = SyntaxKind.QuestionQuestionToken;
@@ -692,13 +710,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '<':
+                case '《':
                     TextWindow.AdvanceChar();
                     if (TextWindow.PeekChar() == '=')
                     {
                         TextWindow.AdvanceChar();
                         info.Kind = SyntaxKind.LessThanEqualsToken;
                     }
-                    else if (TextWindow.PeekChar() == '<')
+                    else if (TextWindow.PeekChar() == character)
                     {
                         TextWindow.AdvanceChar();
                         if (TextWindow.PeekChar() == '=')
@@ -719,6 +738,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '>':
+                case '》':
                     TextWindow.AdvanceChar();
                     if (TextWindow.PeekChar() == '=')
                     {
@@ -733,7 +753,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '@':
-                    if (TextWindow.PeekChar(1) == '"')
+                    if (TextWindow.PeekChar(1) == '"' || TextWindow.PeekChar(1) == '“')
                     {
                         this.ScanVerbatimStringLiteral(ref info);
                     }
@@ -747,13 +767,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 case '$':
-                    if (TextWindow.PeekChar(1) == '"')
+                case '￥':
+                    if (TextWindow.PeekChar(1) == '"' || TextWindow.PeekChar(1) == '“')
                     {
                         this.ScanInterpolatedStringLiteral(false, ref info);
                         CheckFeatureAvailability(MessageID.IDS_FeatureInterpolatedStrings);
                         break;
                     }
-                    else if (TextWindow.PeekChar(1) == '@' && TextWindow.PeekChar(2) == '"')
+                    else if (TextWindow.PeekChar(1) == '@' && (TextWindow.PeekChar(2) == '"' || TextWindow.PeekChar(2) == '“'))
                     {
                         this.ScanInterpolatedStringLiteral(true, ref info);
                         CheckFeatureAvailability(MessageID.IDS_FeatureInterpolatedStrings);

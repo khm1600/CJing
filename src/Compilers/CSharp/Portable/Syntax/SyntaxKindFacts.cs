@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified : 2018.09
 
 using System.Collections.Generic;
 
@@ -790,128 +791,191 @@ namespace Microsoft.CodeAnalysis.CSharp
             switch (text)
             {
                 case "bool":
+                case "布":
                     return SyntaxKind.BoolKeyword;
                 case "byte":
+                case "字节":
                     return SyntaxKind.ByteKeyword;
                 case "sbyte":
+                case "符字节":
                     return SyntaxKind.SByteKeyword;
                 case "short":
+                case "短":
                     return SyntaxKind.ShortKeyword;
                 case "ushort":
+                case "无短":
                     return SyntaxKind.UShortKeyword;
                 case "int":
+                case "整":
                     return SyntaxKind.IntKeyword;
                 case "uint":
+                case "无整":
                     return SyntaxKind.UIntKeyword;
                 case "long":
+                case "长":
                     return SyntaxKind.LongKeyword;
                 case "ulong":
+                case "无长":
                     return SyntaxKind.ULongKeyword;
                 case "double":
+                case "双":
                     return SyntaxKind.DoubleKeyword;
                 case "float":
+                case "浮":
                     return SyntaxKind.FloatKeyword;
                 case "decimal":
+                case "十浮":
                     return SyntaxKind.DecimalKeyword;
                 case "string":
+                case "字符串":
                     return SyntaxKind.StringKeyword;
                 case "char":
+                case "字符":
                     return SyntaxKind.CharKeyword;
                 case "void":
+                case "无":
                     return SyntaxKind.VoidKeyword;
                 case "object":
+                case "对象":
                     return SyntaxKind.ObjectKeyword;
                 case "typeof":
+                case "类型":
                     return SyntaxKind.TypeOfKeyword;
                 case "sizeof":
+                case "大小":
                     return SyntaxKind.SizeOfKeyword;
                 case "null":
+                case "空":
                     return SyntaxKind.NullKeyword;
                 case "true":
+                case "真":
                     return SyntaxKind.TrueKeyword;
                 case "false":
+                case "假":
                     return SyntaxKind.FalseKeyword;
                 case "if":
+                case "若":
                     return SyntaxKind.IfKeyword;
                 case "else":
+                case "否则":
                     return SyntaxKind.ElseKeyword;
                 case "while":
+                case "当":
                     return SyntaxKind.WhileKeyword;
                 case "for":
+                case "对于":
                     return SyntaxKind.ForKeyword;
                 case "foreach":
+                case "对于每":
                     return SyntaxKind.ForEachKeyword;
                 case "do":
+                case "做":
                     return SyntaxKind.DoKeyword;
                 case "switch":
+                case "开关":
                     return SyntaxKind.SwitchKeyword;
                 case "case":
+                case "情形":
                     return SyntaxKind.CaseKeyword;
                 case "default":
+                case "默认":
                     return SyntaxKind.DefaultKeyword;
                 case "lock":
+                case "锁":
                     return SyntaxKind.LockKeyword;
                 case "try":
+                case "试":
                     return SyntaxKind.TryKeyword;
                 case "throw":
+                case "丢":
                     return SyntaxKind.ThrowKeyword;
                 case "catch":
+                case "接":
                     return SyntaxKind.CatchKeyword;
                 case "finally":
+                case "最后":
                     return SyntaxKind.FinallyKeyword;
                 case "goto":
+                case "转至":
                     return SyntaxKind.GotoKeyword;
                 case "break":
+                case "断":
                     return SyntaxKind.BreakKeyword;
                 case "continue":
+                case "继":
                     return SyntaxKind.ContinueKeyword;
                 case "return":
+                case "返回":
                     return SyntaxKind.ReturnKeyword;
                 case "public":
+                case "公":
                     return SyntaxKind.PublicKeyword;
                 case "private":
+                case "私":
                     return SyntaxKind.PrivateKeyword;
                 case "internal":
+                case "内":
                     return SyntaxKind.InternalKeyword;
                 case "protected":
+                case "护":
                     return SyntaxKind.ProtectedKeyword;
                 case "static":
+                case "静":
                     return SyntaxKind.StaticKeyword;
                 case "readonly":
+                case "只读":
                     return SyntaxKind.ReadOnlyKeyword;
                 case "sealed":
+                case "密封":
                     return SyntaxKind.SealedKeyword;
                 case "const":
+                case "常":
                     return SyntaxKind.ConstKeyword;
                 case "fixed":
+                case "固定":
                     return SyntaxKind.FixedKeyword;
                 case "stackalloc":
+                case "栈分配":
                     return SyntaxKind.StackAllocKeyword;
                 case "volatile":
+                case "易变":
                     return SyntaxKind.VolatileKeyword;
                 case "new":
+                case "新":
                     return SyntaxKind.NewKeyword;
                 case "override":
+                case "取代":
                     return SyntaxKind.OverrideKeyword;
                 case "abstract":
+                case "抽象":
                     return SyntaxKind.AbstractKeyword;
                 case "virtual":
+                case "虚":
                     return SyntaxKind.VirtualKeyword;
                 case "event":
+                case "事件":
                     return SyntaxKind.EventKeyword;
                 case "extern":
+                case "外":
                     return SyntaxKind.ExternKeyword;
                 case "ref":
+                case "引":
                     return SyntaxKind.RefKeyword;
                 case "out":
+                case "出":
                     return SyntaxKind.OutKeyword;
                 case "in":
+                case "入":
+                case "于":
                     return SyntaxKind.InKeyword;
                 case "is":
+                case "是":
                     return SyntaxKind.IsKeyword;
                 case "as":
+                case "作为":
                     return SyntaxKind.AsKeyword;
                 case "params":
+                case "变参":
                     return SyntaxKind.ParamsKeyword;
                 case "__arglist":
                     return SyntaxKind.ArgListKeyword;
@@ -922,34 +986,49 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case "__refvalue":
                     return SyntaxKind.RefValueKeyword;
                 case "this":
+                case "此":
                     return SyntaxKind.ThisKeyword;
                 case "base":
+                case "基":
                     return SyntaxKind.BaseKeyword;
                 case "namespace":
+                case "命名空间":
                     return SyntaxKind.NamespaceKeyword;
                 case "using":
+                case "用":
                     return SyntaxKind.UsingKeyword;
                 case "class":
+                case "类":
                     return SyntaxKind.ClassKeyword;
                 case "struct":
+                case "结构":
                     return SyntaxKind.StructKeyword;
                 case "interface":
+                case "接口":
                     return SyntaxKind.InterfaceKeyword;
                 case "enum":
+                case "枚举":
                     return SyntaxKind.EnumKeyword;
                 case "delegate":
+                case "委托":
                     return SyntaxKind.DelegateKeyword;
                 case "checked":
+                case "检查":
                     return SyntaxKind.CheckedKeyword;
                 case "unchecked":
+                case "未检查":
                     return SyntaxKind.UncheckedKeyword;
                 case "unsafe":
+                case "不安全":
                     return SyntaxKind.UnsafeKeyword;
                 case "operator":
+                case "算符":
                     return SyntaxKind.OperatorKeyword;
                 case "implicit":
+                case "隐式":
                     return SyntaxKind.ImplicitKeyword;
                 case "explicit":
+                case "显式":
                     return SyntaxKind.ExplicitKeyword;
                 default:
                     return SyntaxKind.None;
@@ -1126,70 +1205,103 @@ namespace Microsoft.CodeAnalysis.CSharp
             switch (text)
             {
                 case "yield":
+                case "生成":
                     return SyntaxKind.YieldKeyword;
                 case "partial":
+                case "部分":
                     return SyntaxKind.PartialKeyword;
                 case "from":
+                case "从":
                     return SyntaxKind.FromKeyword;
                 case "group":
+                case "分组":
                     return SyntaxKind.GroupKeyword;
                 case "join":
+                case "加入":
                     return SyntaxKind.JoinKeyword;
                 case "into":
+                case "至":
                     return SyntaxKind.IntoKeyword;
                 case "let":
+                case "令":
                     return SyntaxKind.LetKeyword;
                 case "by":
+                case "以":
                     return SyntaxKind.ByKeyword;
                 case "where":
+                case "其中":
                     return SyntaxKind.WhereKeyword;
                 case "select":
+                case "选出":
                     return SyntaxKind.SelectKeyword;
                 case "get":
+                case "取":
                     return SyntaxKind.GetKeyword;
                 case "set":
+                case "设":
                     return SyntaxKind.SetKeyword;
                 case "add":
+                case "添加":
                     return SyntaxKind.AddKeyword;
                 case "remove":
+                case "删除":
                     return SyntaxKind.RemoveKeyword;
                 case "orderby":
+                case "排序":
                     return SyntaxKind.OrderByKeyword;
                 case "alias":
+                case "别名":
                     return SyntaxKind.AliasKeyword;
                 case "on":
+                case "在":
                     return SyntaxKind.OnKeyword;
                 case "equals":
+                case "等于":
                     return SyntaxKind.EqualsKeyword;
                 case "ascending":
+                case "升序":
                     return SyntaxKind.AscendingKeyword;
                 case "descending":
+                case "降序":
                     return SyntaxKind.DescendingKeyword;
                 case "assembly":
+                case "程序集":
                     return SyntaxKind.AssemblyKeyword;
                 case "module":
+                case "模块":
                     return SyntaxKind.ModuleKeyword;
                 case "type":
+                case "类型":
                     return SyntaxKind.TypeKeyword;
                 case "field":
+                case "字段":
                     return SyntaxKind.FieldKeyword;
                 case "method":
+                case "方法":
                     return SyntaxKind.MethodKeyword;
                 case "param":
+                case "参数":
                     return SyntaxKind.ParamKeyword;
                 case "property":
+                case "属性":
                     return SyntaxKind.PropertyKeyword;
                 case "typevar":
+                case "类型参数":
                     return SyntaxKind.TypeVarKeyword;
                 case "global":
+                case "全局":
                     return SyntaxKind.GlobalKeyword;
                 case "async":
+                case "异步":
                     return SyntaxKind.AsyncKeyword;
                 case "await":
+                case "等候":
                     return SyntaxKind.AwaitKeyword;
                 case "when":
+                case "若有":
                     return SyntaxKind.WhenKeyword;
                 case "nameof":
+                case "名称":
                     return SyntaxKind.NameOfKeyword;
                 case "_":
                     return SyntaxKind.UnderscoreToken;

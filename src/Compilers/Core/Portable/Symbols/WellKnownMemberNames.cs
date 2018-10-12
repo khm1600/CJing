@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using System;
 using System.Runtime.CompilerServices;
@@ -57,6 +58,8 @@ namespace Microsoft.CodeAnalysis
         /// The name of an entry point method.
         /// </summary>
         public const string EntryPointMethodName = "Main";
+        internal const string EntryPointMethodNameOrigional = "Main";
+        internal const string EntryPointMethodNameAlternative = "主要";
 
         /// <summary>
         /// The default fully qualified name of a <c>Script</c> class.

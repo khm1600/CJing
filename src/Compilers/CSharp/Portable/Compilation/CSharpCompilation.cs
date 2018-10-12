@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using System;
 using System.Collections.Concurrent;
@@ -1454,7 +1455,11 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     AddEntryPointCandidates(
                         entryPointCandidates,
-                        this.GetSymbolsWithName(WellKnownMemberNames.EntryPointMethodName, SymbolFilter.Member, cancellationToken));
+                        this.GetSymbolsWithName(WellKnownMemberNames.EntryPointMethodNameOrigional, SymbolFilter.Member, cancellationToken));
+
+                    AddEntryPointCandidates(
+                        entryPointCandidates,
+                        this.GetSymbolsWithName(WellKnownMemberNames.EntryPointMethodNameAlternative, SymbolFilter.Member, cancellationToken));
 
                     // Global code is the entry point, ignore all other Mains.
                     var scriptClass = this.ScriptClass;

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// First modified: 2018.09
 
 using System;
 using System.Collections.Generic;
@@ -621,7 +622,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     return false;
                 }
 
-                return IsStatic && Name == WellKnownMemberNames.EntryPointMethodName;
+                return IsStatic && (Name == WellKnownMemberNames.EntryPointMethodNameOrigional || Name == WellKnownMemberNames.EntryPointMethodNameAlternative);
             }
         }
 

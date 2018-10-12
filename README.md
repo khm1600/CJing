@@ -1,3 +1,30 @@
+C# with alternative keywords in Chinese (Simplified) characters similar to the one purposed in [issue #993 of dotnte/csharplang](https://github.com/dotnet/csharplang/issues/993).  
+
+### What's working  
+* Correct (0-warning-0-error) programs correctly compiles.  
+* Valid C# remains valid.  
+* All keywords, most contextual keywords have an alias in Chinese characters.  
+* Most punctuations have a full-width alias that's easier to type when using a Chinese IME.  
+* Alternative name for `Main`.  
+
+### What's not working  
+* Programs which causes compiler warning(s) or error(s) may cause the compiler to crash.   
+
+### Other notes  
+* Contextual keyword `value` has no alias.  
+* Operators `->`, `^` remains hard to type when using a Chinese IME.  
+* Only the compiler (csc.exe) and the interactive compiler (csi.exe) are tested.
+
+### docs  
+
+[CJing-docs](https://github.com/khm1600/CJing-docs)
+
+------------------
+
+Origional README
+
+------------------
+
 ## Welcome to the .NET Compiler Platform ("Roslyn")
 
 [//]: # (Begin current test results)
